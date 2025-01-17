@@ -37,8 +37,8 @@ services:
     image: datadog/agent:latest
     container_name: datadog_agent
     environment:
-      - DD_API_KEY=your_datadog_api_key
-      - DD_SITE=datadoghq.com
+      - DD_API_KEY=5512f4d274e477960239abda2d79a70a
+      - DD_SITE=us5.datadoghq.com
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
     ports:
