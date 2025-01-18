@@ -43,6 +43,7 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
     ports:
       - "8126:8126"
+      - "8125:8125/udp"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 

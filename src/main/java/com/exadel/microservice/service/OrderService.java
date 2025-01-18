@@ -30,6 +30,8 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(OrderRequest orderRequest){
+        log.info("Creating new order to customer: {}", orderRequest.getCustomerName());
+
         Order newOrder = new Order();
         newOrder.setCustomerName(orderRequest.getCustomerName());
         newOrder.setProduct(orderRequest.getProduct());
@@ -38,23 +40,34 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(newOrder);
 
+        log.info("Order created with ID: {}", savedOrder.getId());
+
         eventProducer.sendOrderEvent(savedOrder);
+
+        log.info("Kafka event sent");
 
         return savedOrder;
     }
 
     @Transactional
     public Order updateOrderStatus(UUID orderId, OrderStatus newOrderStatus){
+        log.info("Updating order {}", orderId);
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(newOrderStatus);
+
         Order updatedOrder = orderRepository.saveAndFlush(order);
 
+        log.info("Order {} updated", orderId);
+
         eventProducer.sendOrderEvent(updatedOrder);
+
+        log.info("Kafka event update sent");
 
         return updatedOrder;
     }
 
     public Order getOrderById(UUID orderId){
+        log.info("Getting order {}", orderId);
         return orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
