@@ -10,4 +10,7 @@ import java.util.UUID;
 
 public interface OrderRepository extends JpaRepository<Order, UUID> {
     Page<Order> findByCustomerNameContainingIgnoreCaseAndStatus(String customerName, OrderStatus status, Pageable pageable);
+    Page<Order> findByCustomerName(String customerName, Pageable pageable);
+    Page<Order> findByStatus(OrderStatus status, Pageable pageable);
+    Page<Order> findByCustomerNameAndStatus(String customerName, OrderStatus status, Pageable pageable);
 }

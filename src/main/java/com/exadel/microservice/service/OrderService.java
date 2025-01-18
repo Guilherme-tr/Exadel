@@ -8,6 +8,8 @@ import com.exadel.microservice.util.OrderStatus;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -50,5 +52,21 @@ public class OrderService {
         eventProducer.sendOrderEvent(updatedOrder);
 
         return updatedOrder;
+    }
+
+    public Order getOrderById(UUID orderId){
+        return orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+    }
+
+    public Page<Order> getOrders(String customerName, OrderStatus status, Pageable pageable){
+        if(customerName != null && status != null){
+            return orderRepository.findByCustomerNameAndStatus(customerName, status, pageable);
+        } else if (customerName != null){
+            return orderRepository.findByCustomerName(customerName, pageable);
+        } else if (status != null) {
+            return orderRepository.findByStatus(status, pageable);
+        } else {
+            return orderRepository.findAll(pageable);
+        }
     }
 }

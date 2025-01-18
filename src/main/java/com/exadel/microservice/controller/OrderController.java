@@ -38,4 +38,5 @@ public class OrderController {
         Order updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
         return ResponseEntity.ok(updatedOrder);
     }
+
 }
