@@ -4,7 +4,8 @@ import com.exadel.microservice.dto.OrderRequest;
 import com.exadel.microservice.entity.Order;
 import com.exadel.microservice.service.OrderService;
 import com.exadel.microservice.util.OrderStatus;
-import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,6 +38,14 @@ public class OrderController {
     public ResponseEntity<Order> updateOrderStatus(@PathVariable UUID orderId, @RequestParam OrderStatus newStatus){
         Order updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
         return ResponseEntity.ok(updatedOrder);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Order>> getOrders(@RequestParam(required = false) String customerName,
+                                                 @RequestParam(required = false) OrderStatus status,
+                                                 Pageable pageable) {
+        Page<Order> orders = orderService.getOrders(customerName, status, pageable);
+        return ResponseEntity.ok(orders);
     }
 
 }
