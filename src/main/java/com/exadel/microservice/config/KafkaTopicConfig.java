@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaTopitConfig {
+public class KafkaTopicConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String address;
 
@@ -22,8 +22,4 @@ public class KafkaTopitConfig {
         return new KafkaAdmin(configs);
     }
 
-    @Bean
-    public NewTopic topicOrderProcessed(){
-        return new NewTopic("order-processed", 1, (short)1);
-    }
 }

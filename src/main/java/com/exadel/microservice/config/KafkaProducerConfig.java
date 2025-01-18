@@ -1,11 +1,14 @@
 package com.exadel.microservice.config;
 
+import com.exadel.microservice.dto.OrderEvent;
 import com.exadel.microservice.record.OrderRecord;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -20,7 +23,12 @@ public class KafkaProducerConfig {
     private String address;
 
     @Bean
-    public ProducerFactory<String, OrderRecord> orderProducerFactory(){
+    public NewTopic orderEventsTopic(){
+        return TopicBuilder.name("order-events").partitions(1).replicas(1).build();
+    }
+
+    @Bean
+    public ProducerFactory<String, OrderEvent> orderProducerFactory(){
         Map<String, Object> properties = new HashMap<>();
         properties.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, address);
@@ -31,7 +39,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, OrderRecord> orderRecordKafkaTemplate(){
+    public KafkaTemplate<String, OrderEvent> orderRecordKafkaTemplate(){
         return new KafkaTemplate<>(orderProducerFactory());
     }
 }
