@@ -1,10 +1,10 @@
 package com.exadel.microservice.service;
 
 import com.exadel.microservice.dto.OrderEvent;
+import com.exadel.microservice.dto.OrderRequest;
 import com.exadel.microservice.entity.Order;
 import com.exadel.microservice.repository.OrderRepository;
 import com.exadel.microservice.util.OrderStatus;
-import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,17 +27,16 @@ public class OrderService {
     }
 
     @Transactional
-    public Order createOrder(Order order){
-        order.setId(UUID.randomUUID());
-        Order savedOrder = orderRepository.saveAndFlush(order);
+    public Order createOrder(OrderRequest orderRequest){
+        Order newOrder = new Order();
+        newOrder.setCustomerName(orderRequest.getCustomerName());
+        newOrder.setProduct(orderRequest.getProduct());
+        newOrder.setQuantity(orderRequest.getQuantity());
+        newOrder.setStatus(OrderStatus.PENDING);
 
-        OrderEvent event = new OrderEvent(savedOrder.getId(),
-                savedOrder.getCustomerName(),
-                savedOrder.getProduct(),
-                savedOrder.getQuantity(),
-                savedOrder.getStatus());
+        Order savedOrder = orderRepository.save(newOrder);
 
-        eventProducer.sendOrderEvent(event);
+        eventProducer.sendOrderEvent(savedOrder);
 
         return savedOrder;
     }
@@ -48,13 +47,7 @@ public class OrderService {
         order.setStatus(newOrderStatus);
         Order updatedOrder = orderRepository.saveAndFlush(order);
 
-        OrderEvent event = new OrderEvent(updatedOrder.getId(),
-                updatedOrder.getCustomerName(),
-                updatedOrder.getProduct(),
-                updatedOrder.getQuantity(),
-                updatedOrder.getStatus());
-
-        eventProducer.sendOrderEvent(event);
+        eventProducer.sendOrderEvent(updatedOrder);
 
         return updatedOrder;
     }

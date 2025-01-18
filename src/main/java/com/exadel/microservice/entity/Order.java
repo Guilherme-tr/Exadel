@@ -2,6 +2,7 @@ package com.exadel.microservice.entity;
 
 import com.exadel.microservice.util.OrderStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -10,11 +11,13 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @Version
-    private int version;
+    @Version  // O Hibernate gerencia esse campo automaticamente
+    private Long version;
 
     @Column(nullable = false)
     private String customerName;
