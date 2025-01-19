@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.exadel</groupId>
-	<artifactId>microservice</artifactId>
+	<artifactId>spring-boot-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>microservice</name>
 	<description>Gps project for Spring Boot</description>
