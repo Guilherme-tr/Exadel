@@ -8,6 +8,12 @@ public class OrderRequest {
     public OrderRequest() {
     }
 
+    public OrderRequest(String customerName, String product, int quantity) {
+        this.customerName = customerName;
+        this.product = product;
+        this.quantity = quantity;
+    }
+
     public String getCustomerName() {
         return customerName;
     }
