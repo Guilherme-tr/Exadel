@@ -31,7 +31,7 @@ public class OrderControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.customerName").value("Maria Silva"));
+                .andExpect(jsonPath("$.customerName").value("Guilherme Trujilo1"));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class OrderControllerTest {
 
         mockMvc.perform(get("/orders/" + orderId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerName").value("Carlos Souza"));
+                .andExpect(jsonPath("$.customerName").value("Guilherme Trujilo2"));
     }
 
     @Test
