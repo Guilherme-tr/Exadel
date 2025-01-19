@@ -1,6 +1,5 @@
 package com.exadel.microservice.service;
 
-import com.exadel.microservice.dto.OrderEvent;
 import com.exadel.microservice.dto.OrderRequest;
 import com.exadel.microservice.entity.Order;
 import com.exadel.microservice.repository.OrderRepository;
