@@ -10,8 +10,6 @@ Java
 
 Spring Boot 3.x (Spring Web, Spring Data JPA, Spring Kafka, Spring Actuator)
 
-Quarkus
-
 PostgreSQL 
 
 Kafka 
